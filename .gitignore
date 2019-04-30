@@ -213,4 +213,7 @@ fabric.properties
 # Sonarlint plugin
 .idea/sonarlint
 
+.DS_Store
+/dist/
+
 # End of https://www.gitignore.io/api/node,webstorm,sublimetext,visualstudiocode
