@@ -16,14 +16,20 @@ exports.assetsPath = function (_path) {
 
 // Generate loaders for standalone style files (outside of .vue)
 exports.styleLoaders = function (options) {
-  const output = []
+  const output = [
+    {
+      test: /\.css$/,
+      use: [ 'style-loader', 'css-loader' ]
+    }
+  ]
+
   const loaderConfig = {
     loader: MiniCssExtractPlugin.loader,
     options: {
       hmr: options.extract
     }
   }
-  const availableLoaders = ['css', 'postcss', 'sass', 'less']
+  const availableLoaders = ['css', 'postcss', 'sass', 'scss', 'less']
 
   for (const extension in availableLoaders) {
     if (!options.usePostCSS && extension === 'postcss') {
