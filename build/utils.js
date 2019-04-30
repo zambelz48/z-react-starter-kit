@@ -5,7 +5,7 @@ const config = require('../config')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const packageConfig = require('../package.json')
 
-exports.assetsPath = function (_path) {
+exports.assetsPath = (_path) => {
   const isProduction = (process.env.NODE_ENV === 'prod' || process.env.APP_ENV === 'prod')
 
   const assetsSubDirectory = isProduction ?
@@ -15,7 +15,7 @@ exports.assetsPath = function (_path) {
 }
 
 // Generate loaders for standalone style files (outside of .vue)
-exports.styleLoaders = function (options) {
+exports.styleLoaders = (options) => {
   const output = [
     {
       test: /\.css$/,
