@@ -12,34 +12,39 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
-const nodeEnv = utils.appEnv
-const debugMode = nodeEnv !== 'prod'
-
 const webpackConfig = webpackMerge(baseWebpackConfig, {
+
   module: {
     rules: utils.styleLoaders({
       hotReload: false,
       usePostCSS: true
     })
   },
+
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
+
   output: {
     path: config.build.assetsRoot,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
-  plugins: [
 
-    new UglifyJsPlugin({
-      uglifyOptions: {
-        compress: {
-          warnings: debugMode,
-          drop_console: !debugMode
-        }
-      },
-      sourceMap: config.build.productionSourceMap,
-      parallel: true
-    }),
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          warnings: utils.debugMode,
+          compress: {
+            drop_console: !utils.debugMode
+          }
+        },
+        sourceMap: config.build.productionSourceMap,
+        parallel: true
+      })
+    ]
+  },
+
+  plugins: [
 
     // extract css into its own file
     new MiniCssExtractPlugin({

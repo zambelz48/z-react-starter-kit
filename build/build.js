@@ -3,7 +3,7 @@
 require('./check-versions')()
 
 const ora = require('ora')
-const rm = require('rimraf')
+const rimraf = require('rimraf')
 const path = require('path')
 const chalk = require('chalk')
 const webpack = require('webpack')
@@ -16,7 +16,7 @@ spinner.start()
 
 const targetPath = path.join(config.build.assetsRoot, config.build.assetsSubDirectory)
 
-rm(targetPath, err => {
+rimraf(targetPath, err => {
 
   if (err) {
     throw err

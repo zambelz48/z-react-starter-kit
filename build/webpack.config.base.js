@@ -13,28 +13,32 @@ const resolvePath = (dir) => {
   return path.resolve(__dirname, dir)
 }
 
+let aliasesPaths = {
+  // replaces the "react-dom" package of the same version,
+  // but with additional patches to support hot reloading.
+  'react-dom': '@hot-loader/react-dom'
+}
+Object.assign(aliasesPaths, config.general.customPaths)
+
 module.exports = {
+
   mode: utils.nodeEnv,
+
   context: resolvePath('../'),
+
   entry: './src/main.js',
+
   resolve: {
     extensions: ['*', '.js', '.jsx'],
-    alias: {
-      // replaces the "react-dom" package of the same version,
-      // but with additional patches to support hot reloading.
-      'react-dom': '@hot-loader/react-dom',
-
-      // path aliasing
-      'static': joinPath('static'),
-      'src': joinPath('src')
-    }
+    alias: aliasesPaths
   },
+
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
-    publicPath: (utils.appEnv === 'prod') ?
-      config.build.assetsPublicPath : config.dev.assetsPublicPath
+    publicPath: utils.publicPath
   },
+
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
@@ -43,6 +47,7 @@ module.exports = {
       }
     })
   ],
+
   module: {
     rules: [
       {
@@ -81,6 +86,7 @@ module.exports = {
       }
     ]
   },
+
   node: {
     // prevent webpack from injecting mocks to Node native modules
     // that does not make sense for the client
@@ -90,4 +96,5 @@ module.exports = {
     tls: 'empty',
     child_process: 'empty'
   }
+
 }

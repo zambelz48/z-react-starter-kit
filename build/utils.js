@@ -10,9 +10,9 @@ const getAppEnv = () => {
 }
 
 const getNodeEnv = () => {
-  const currentEnv = getAppEnv()
+  const appEnv = getAppEnv()
 
-  switch (currentEnv) {
+  switch (appEnv) {
     case 'dev':
       return 'development'
     case 'prod':
@@ -22,9 +22,39 @@ const getNodeEnv = () => {
   return 'production'
 }
 
+const isDebugModeActive = () => {
+  const appEnv = getAppEnv()
+
+  switch (appEnv) {
+    case 'dev':
+      return true
+    case 'prod':
+      return false
+  }
+
+  return false
+}
+
+const getPublicPath = () => {
+  const appEnv = getAppEnv()
+
+  switch (appEnv) {
+    case 'dev':
+      return config.build.assetsPublicPath
+    case 'prod':
+      return config.dev.assetsPublicPath
+  }
+
+  return '/'
+}
+
 exports.appEnv = getAppEnv()
 
 exports.nodeEnv = getNodeEnv()
+
+exports.debugMode = isDebugModeActive()
+
+exports.publicPath = getPublicPath()
 
 exports.assetsPath = (_path) => {
   const isProduction = (getAppEnv() === 'prod')

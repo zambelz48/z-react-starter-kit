@@ -11,13 +11,14 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
 const devWebpackConfig = webpackMerge(baseWebpackConfig, {
+
   module: {
     rules: utils.styleLoaders({
       hotReload: true,
       usePostCSS: true
     })
   },
-  // cheap-module-eval-source-map is faster for development
+
   devtool: config.dev.devtool,
 
   // these devServer options should be customized in /config/index.js
