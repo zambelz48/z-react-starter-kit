@@ -5,8 +5,29 @@ const config = require('../config')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const packageConfig = require('../package.json')
 
-exports.assetsPath = function (_path) {
-  const isProduction = (process.env.NODE_ENV === 'prod' || process.env.APP_ENV === 'prod')
+const getAppEnv = () => {
+  return process.env.APP_ENV || 'prod'
+}
+
+const getNodeEnv = () => {
+  const currentEnv = getAppEnv()
+
+  switch (currentEnv) {
+    case 'dev':
+      return 'development'
+    case 'prod':
+      return 'production'
+  }
+
+  return 'production'
+}
+
+exports.appEnv = getAppEnv()
+
+exports.nodeEnv = getNodeEnv()
+
+exports.assetsPath = (_path) => {
+  const isProduction = (getAppEnv() === 'prod')
 
   const assetsSubDirectory = isProduction ?
     config.build.assetsSubDirectory : config.dev.assetsSubDirectory
@@ -15,15 +36,22 @@ exports.assetsPath = function (_path) {
 }
 
 // Generate loaders for standalone style files (outside of .vue)
-exports.styleLoaders = function (options) {
-  const output = []
+exports.styleLoaders = (options) => {
+  const output = [
+    {
+      test: /\.css$/,
+      use: [ 'style-loader', 'css-loader' ]
+    }
+  ]
+
   const loaderConfig = {
     loader: MiniCssExtractPlugin.loader,
     options: {
-      hmr: options.extract
+      hmr: options.hotReload,
+      reloadAll: options.hotReload
     }
   }
-  const availableLoaders = ['css', 'postcss', 'sass', 'less']
+  const availableLoaders = ['css', 'postcss', 'sass', 'scss', 'less']
 
   for (const extension in availableLoaders) {
     if (!options.usePostCSS && extension === 'postcss') {

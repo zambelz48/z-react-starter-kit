@@ -1,5 +1,6 @@
 'use strict'
 
+const webpack = require('webpack')
 const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
@@ -12,10 +13,8 @@ const resolvePath = (dir) => {
   return path.resolve(__dirname, dir)
 }
 
-const mode = process.env.NODE_ENV === '"prod"' ? 'production' : 'development'
-
 module.exports = {
-  mode: mode,
+  mode: utils.nodeEnv,
   context: resolvePath('../'),
   entry: './src/main.js',
   resolve: {
@@ -33,9 +32,17 @@ module.exports = {
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
-    publicPath: (process.env.NODE_ENV === 'prod' || process.env.APP_ENV === 'prod') ?
+    publicPath: (utils.appEnv === 'prod') ?
       config.build.assetsPublicPath : config.dev.assetsPublicPath
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: `"${utils.nodeEnv}"`,
+        APP_ENV: `"${utils.appEnv}"`
+      }
+    })
+  ],
   module: {
     rules: [
       {

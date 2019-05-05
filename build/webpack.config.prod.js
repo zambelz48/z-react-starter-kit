@@ -4,21 +4,21 @@ const path = require('path')
 const utils = require('./utils')
 const webpack = require('webpack')
 const config = require('../config')
-const merge = require('webpack-merge')
-const baseWebpackConfig = require('./webpack.config')
+const webpackMerge = require('webpack-merge')
+const baseWebpackConfig = require('./webpack.config.base')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
-const appEnv = process.env.NODE_ENV
-const debugMode = appEnv !== '"prod"'
+const nodeEnv = utils.appEnv
+const debugMode = nodeEnv !== 'prod'
 
-const webpackConfig = merge(baseWebpackConfig, {
+const webpackConfig = webpackMerge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({
-      extract: true,
+      hotReload: false,
       usePostCSS: true
     })
   },
@@ -29,10 +29,6 @@ const webpackConfig = merge(baseWebpackConfig, {
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
   plugins: [
-
-    new webpack.DefinePlugin({
-      'process.env': { NODE_ENV: '"prod"' }
-    }),
 
     new UglifyJsPlugin({
       uglifyOptions: {

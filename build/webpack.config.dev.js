@@ -2,34 +2,23 @@
 const utils = require('./utils')
 const webpack = require('webpack')
 const config = require('../config')
-const merge = require('webpack-merge')
+const webpackMerge = require('webpack-merge')
 const path = require('path')
-const baseWebpackConfig = require('./webpack.config')
+const baseWebpackConfig = require('./webpack.config.base')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
-const HOST = process.env.HOST
-const PORT = process.env.PORT && Number(process.env.PORT)
-const ENV = process.env.NODE_ENV
-
-const devWebpackConfig = merge(baseWebpackConfig, {
+const devWebpackConfig = webpackMerge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({
-      extract: false,
+      hotReload: true,
       usePostCSS: true
     })
   },
   // cheap-module-eval-source-map is faster for development
   devtool: config.dev.devtool,
-
-  // devServer: {
-  //   contentBase: joinPath('public'),
-  //   port: 3000,
-  //   publicPath: 'http://localhost:3000/dist/',
-  //   hotOnly: true
-  // },
 
   // these devServer options should be customized in /config/index.js
   devServer: {
@@ -45,8 +34,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     hot: true,
     contentBase: false, // since we use CopyWebpackPlugin.
     compress: true,
-    host: HOST || config.dev.host,
-    port: PORT || config.dev.port,
+    host: config.dev.host,
+    port: config.dev.port,
     open: config.dev.autoOpenBrowser,
     overlay: config.dev.errorOverlay ? { warnings: false, errors: true } : false,
     publicPath: config.dev.assetsPublicPath,
@@ -57,10 +46,6 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     }
   },
   plugins: [
-
-    new webpack.DefinePlugin({
-      'process.env': { NODE_ENV: '"dev"' }
-    }),
 
     new webpack.HotModuleReplacementPlugin(),
 
@@ -101,7 +86,7 @@ module.exports = new Promise((resolve, reject) => {
       // Add FriendlyErrorsPlugin
       devWebpackConfig.plugins.push(new FriendlyErrorsPlugin({
         compilationSuccessInfo: {
-          messages: [`Your application is running at: http://${devWebpackConfig.devServer.host}:${port} with environment: '${ENV}'`]
+          messages: [`Your application is running at: http://${devWebpackConfig.devServer.host}:${port} with environment: '${utils.appEnv}'`]
         },
         onErrors: config.dev.notifyOnErrors ? utils.createNotifierCallback() : undefined
       }))
