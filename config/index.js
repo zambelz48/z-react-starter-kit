@@ -2,7 +2,19 @@
 
 const path = require('path')
 
+const joinPath = (dir) => {
+  return path.join(__dirname, '..', dir)
+}
+
 module.exports = {
+
+  general: {
+    customPaths: {
+      'src': joinPath('src'),
+      'static': joinPath('static')
+    }
+  },
+
   dev: {
 
     // Paths
@@ -31,9 +43,8 @@ module.exports = {
      */
 
     // https://webpack.js.org/configuration/devtool/#development
+    // cheap-module-eval-source-map is faster for development
     devtool: 'cheap-module-eval-source-map',
-
-    cacheBusting: true,
 
     cssSourceMap: true
   },
@@ -66,6 +77,7 @@ module.exports = {
     // View the bundle analyzer report after build finishes:
     // `npm run build --report`
     // Set to `true` or `false` to always turn it on or off
-    bundleAnalyzerReport: process.env.npm_config_report
+    bundleAnalyzerReport: process.env.BUNDLE_REPORT
   }
+
 }
