@@ -5,8 +5,29 @@ const config = require('../config')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const packageConfig = require('../package.json')
 
+const getAppEnv = () => {
+  return process.env.APP_ENV || 'prod'
+}
+
+const getNodeEnv = () => {
+  const currentEnv = getAppEnv()
+
+  switch (currentEnv) {
+    case 'dev':
+      return 'development'
+    case 'prod':
+      return 'production'
+  }
+
+  return 'production'
+}
+
+exports.appEnv = getAppEnv()
+
+exports.nodeEnv = getNodeEnv()
+
 exports.assetsPath = (_path) => {
-  const isProduction = (process.env.NODE_ENV === 'prod' || process.env.APP_ENV === 'prod')
+  const isProduction = (getAppEnv() === 'prod')
 
   const assetsSubDirectory = isProduction ?
     config.build.assetsSubDirectory : config.dev.assetsSubDirectory
@@ -26,7 +47,8 @@ exports.styleLoaders = (options) => {
   const loaderConfig = {
     loader: MiniCssExtractPlugin.loader,
     options: {
-      hmr: options.extract
+      hmr: options.hotReload,
+      reloadAll: options.hotReload
     }
   }
   const availableLoaders = ['css', 'postcss', 'sass', 'scss', 'less']
