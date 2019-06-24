@@ -14,13 +14,6 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const webpackConfig = webpackMerge(baseWebpackConfig, {
 
-  module: {
-    rules: utils.styleLoaders({
-      hotReload: false,
-      usePostCSS: true
-    })
-  },
-
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
 
   output: {

@@ -1,6 +1,7 @@
 'use strict'
 
 const webpack = require('webpack')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
@@ -45,6 +46,12 @@ module.exports = {
         NODE_ENV: `"${utils.nodeEnv}"`,
         APP_ENV: `"${utils.appEnv}"`
       }
+    }),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: utils.debugMode ? '[name].css' : '[name].[hash].css',
+      chunkFilename: utils.debugMode ? '[id].css' : '[id].[hash].css'
     })
   ],
 
@@ -59,6 +66,21 @@ module.exports = {
           joinPath('node_modules/webpack-dev-server/client')
         ],
         exclude: /(node_modules|bower_components)/
+      },
+      {
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              hmr: utils.debugMode,
+              reloadAll: utils.debugMode
+            }
+          },
+          'css-loader',
+          'postcss-loader',
+          'sass-loader'
+        ]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
