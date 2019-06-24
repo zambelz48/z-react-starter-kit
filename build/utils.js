@@ -2,7 +2,6 @@
 
 const path = require('path')
 const config = require('../config')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const packageConfig = require('../package.json')
 
 const getAppEnv = () => {
@@ -63,43 +62,6 @@ exports.assetsPath = (_path) => {
     config.build.assetsSubDirectory : config.dev.assetsSubDirectory
 
   return path.posix.join(assetsSubDirectory, _path)
-}
-
-// Generate loaders for standalone style files (outside of .vue)
-exports.styleLoaders = (options) => {
-  const output = [
-    {
-      test: /\.css$/,
-      use: [ 'style-loader', 'css-loader' ]
-    }
-  ]
-
-  const loaderConfig = {
-    loader: MiniCssExtractPlugin.loader,
-    options: {
-      hmr: options.hotReload,
-      reloadAll: options.hotReload
-    }
-  }
-  const availableLoaders = ['css', 'postcss', 'sass', 'scss', 'less']
-
-  for (const extension in availableLoaders) {
-    if (!options.usePostCSS && extension === 'postcss') {
-      continue
-    }
-
-    const loader = [
-      loaderConfig,
-      extension + '-loader'
-    ]
-
-    output.push({
-      test: new RegExp('\\.' + extension + '$'),
-      use: loader
-    })
-  }
-
-  return output
 }
 
 exports.createNotifierCallback = () => {

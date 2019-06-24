@@ -12,13 +12,6 @@ const portfinder = require('portfinder')
 
 const devWebpackConfig = webpackMerge(baseWebpackConfig, {
 
-  module: {
-    rules: utils.styleLoaders({
-      hotReload: true,
-      usePostCSS: true
-    })
-  },
-
   devtool: config.dev.devtool,
 
   // these devServer options should be customized in /config/index.js
