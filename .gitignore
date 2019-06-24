@@ -216,4 +216,5 @@ fabric.properties
 .DS_Store
 /dist/
 
+package-lock.json
 # End of https://www.gitignore.io/api/node,webstorm,sublimetext,visualstudiocode
