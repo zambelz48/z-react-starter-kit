@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"outDir": "dist",
+		"target": "esnext",
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"removeComments": true,
+		"allowJs": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"jsx": "react",
+		"noEmit": false
+	},
+	"include": ["src"],
+	"exclude": ["node_modules", ".git", ".vscode", "dist"]
+}

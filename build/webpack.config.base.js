@@ -27,10 +27,12 @@ module.exports = {
 
   context: resolvePath('../'),
 
-  entry: './src/main.js',
+  entry: './src/main.tsx',
+
+  devtool: 'inline-source-map',
 
   resolve: {
-    extensions: ['*', '.js', '.jsx'],
+    extensions: [ '.tsx', '.ts', '.js' ],
     alias: aliasesPaths
   },
 
@@ -57,6 +59,11 @@ module.exports = {
 
   module: {
     rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/
+      },
       {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',
