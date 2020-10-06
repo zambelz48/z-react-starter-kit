@@ -4,7 +4,7 @@ const path = require('path')
 const utils = require('./utils')
 const webpack = require('webpack')
 const config = require('../config')
-const webpackMerge = require('webpack-merge')
+const { merge } = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.config.base')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -12,7 +12,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
-const webpackConfig = webpackMerge(baseWebpackConfig, {
+const webpackConfig = merge(baseWebpackConfig, {
 
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
 
@@ -34,7 +34,8 @@ const webpackConfig = webpackMerge(baseWebpackConfig, {
         sourceMap: config.build.productionSourceMap,
         parallel: true
       })
-    ]
+    ],
+    concatenateModules: true
   },
 
   plugins: [
@@ -66,16 +67,11 @@ const webpackConfig = webpackMerge(baseWebpackConfig, {
         removeAttributeQuotes: true
         // more options:
         // https://github.com/kangax/html-minifier#options-quick-reference
-      },
-      // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-      chunksSortMode: 'dependency'
+      }
     }),
 
     // keep module.id stable when vendor modules does not change
     new webpack.HashedModuleIdsPlugin(),
-
-    // enable scope hoisting
-    new webpack.optimize.ModuleConcatenationPlugin(),
 
     // This instance extracts shared chunks from code splitted chunks and bundles them
     // in a separate chunk.
@@ -105,13 +101,17 @@ const webpackConfig = webpackMerge(baseWebpackConfig, {
     ]),
 
     // copy custom static assets
-    new CopyWebpackPlugin([
-      {
-        from: path.resolve(__dirname, '../static'),
-        to: config.build.assetsSubDirectory,
-        ignore: ['.*']
-      }
-    ])
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, '../static'),
+          to: config.build.assetsSubDirectory,
+          globOptions: {
+            ignore: ['.*']
+          }
+        }
+      ]
+    })
 
   ]
 })

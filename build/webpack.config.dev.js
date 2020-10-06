@@ -2,7 +2,7 @@
 const utils = require('./utils')
 const webpack = require('webpack')
 const config = require('../config')
-const webpackMerge = require('webpack-merge')
+const { merge } = require('webpack-merge')
 const path = require('path')
 const baseWebpackConfig = require('./webpack.config.base')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
@@ -10,9 +10,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
-const devWebpackConfig = webpackMerge(baseWebpackConfig, {
+const devWebpackConfig = merge(baseWebpackConfig, {
 
   devtool: config.dev.devtool,
+
+  optimization: {
+    namedModules: true,
+    noEmitOnErrors: true
+  },
 
   // these devServer options should be customized in /config/index.js
   devServer: {
@@ -39,13 +44,10 @@ const devWebpackConfig = webpackMerge(baseWebpackConfig, {
       poll: config.dev.poll
     }
   },
+
   plugins: [
 
     new webpack.HotModuleReplacementPlugin(),
-
-    new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
-
-    new webpack.NoEmitOnErrorsPlugin(),
 
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
@@ -55,13 +57,17 @@ const devWebpackConfig = webpackMerge(baseWebpackConfig, {
     }),
 
     // copy custom static assets
-    new CopyWebpackPlugin([
-      {
-        from: path.resolve(__dirname, '../static'),
-        to: config.dev.assetsSubDirectory,
-        ignore: ['.*']
-      }
-    ])
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, '../static'),
+          to: config.dev.assetsSubDirectory,
+          globOptions: {
+            ignore: ['.*']
+          }
+        }
+      ]
+    })
 
   ]
 })
