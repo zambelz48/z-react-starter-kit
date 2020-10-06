@@ -40,12 +40,6 @@ module.exports = {
         NODE_ENV: `"${utils.nodeEnv}"`,
         APP_ENV: `"${utils.appEnv}"`
       }
-    }),
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: utils.debugMode ? '[name].css' : '[name].[hash].css',
-      chunkFilename: utils.debugMode ? '[id].css' : '[id].[hash].css'
     })
   ],
 
@@ -59,28 +53,13 @@ module.exports = {
           joinPath('node_modules/webpack-dev-server/client')
         ],
         use: [
-          (utils.appEnv === 'dev') && {
+          utils.debugMode && {
             loader: 'babel-loader',
             options: { plugins: ['react-refresh/babel'] },
           },
           'ts-loader',
         ].filter(Boolean),
       },
-      // {
-      //   test: /\.tsx?$/,
-      //   use: 'ts-loader',
-      //   exclude: /node_modules/
-      // },
-      // {
-      //   test: /\.(js|jsx)$/,
-      //   loader: 'babel-loader',
-      //   include: [
-      //     joinPath('src'),
-      //     joinPath('test'),
-      //     joinPath('node_modules/webpack-dev-server/client')
-      //   ],
-      //   exclude: /(node_modules|bower_components)/
-      // },
       {
         test: /\.(sa|sc|c)ss$/,
         use: [

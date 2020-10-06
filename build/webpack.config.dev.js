@@ -7,6 +7,7 @@ const path = require('path')
 const baseWebpackConfig = require('./webpack.config.base')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const portfinder = require('portfinder')
@@ -27,7 +28,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       rewrites: [
         {
           from: /.*/,
-          to: path.posix.join(config.dev.assetsPublicPath, 'index.html')
+          to: path.posix.join(config.dev.assetsPublicPath, 'public/index.html')
         }
       ]
     },
@@ -52,9 +53,14 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: 'index.html',
+      filename: 'public/index.html',
+      template: 'public/index.html',
       inject: true
+    }),
+
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: '[id].css'
     }),
 
     // copy custom static assets

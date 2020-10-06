@@ -9,7 +9,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx && stylelint src/**/*.css",
     "start": "webpack-dev-server --inline --progress --config build/webpack.config.dev.js",
     "dev": "APP_ENV=dev yarn start",
-    "build": "APP_ENV=prod node build/build.js"
+    "build": "APP_ENV=prod yarn lint && node build/build.js"
   },
   "dependencies": {
     "react": "16.13.1",

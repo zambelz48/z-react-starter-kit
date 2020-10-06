@@ -42,8 +42,8 @@ const webpackConfig = merge(baseWebpackConfig, {
 
     // extract css into its own file
     new MiniCssExtractPlugin({
-      filename: utils.assetsPath('css/[name].css'),
-      chunkFilename: utils.assetsPath('css/[id].css')
+      filename: utils.assetsPath('css/[name].[chunkhash].css'),
+      chunkFilename: utils.assetsPath('css/[id].[chunkhash].css')
     }),
 
     // Compress extracted CSS. We are using this plugin so that possible
@@ -59,7 +59,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     // see https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       filename: config.build.index,
-      template: 'index.html',
+      template: 'public/index.html',
       inject: true,
       minify: {
         removeComments: true,
