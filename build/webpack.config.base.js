@@ -14,13 +14,6 @@ const resolvePath = (dir) => {
   return path.resolve(__dirname, dir)
 }
 
-let aliasesPaths = {
-  // replaces the "react-dom" package of the same version,
-  // but with additional patches to support hot reloading.
-  'react-dom': '@hot-loader/react-dom'
-}
-Object.assign(aliasesPaths, config.general.customPaths)
-
 module.exports = {
 
   mode: utils.nodeEnv,
@@ -32,8 +25,7 @@ module.exports = {
   devtool: 'inline-source-map',
 
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ],
-    alias: aliasesPaths
+    extensions: [ '.tsx', '.ts', '.js' ]
   },
 
   output: {
@@ -61,19 +53,34 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/
-      },
-      {
-        test: /\.(js|jsx)$/,
-        loader: 'babel-loader',
-        include: [
+        include: [ 
           joinPath('src'),
           joinPath('test'),
           joinPath('node_modules/webpack-dev-server/client')
         ],
-        exclude: /(node_modules|bower_components)/
+        use: [
+          (utils.appEnv === 'dev') && {
+            loader: 'babel-loader',
+            options: { plugins: ['react-refresh/babel'] },
+          },
+          'ts-loader',
+        ].filter(Boolean),
       },
+      // {
+      //   test: /\.tsx?$/,
+      //   use: 'ts-loader',
+      //   exclude: /node_modules/
+      // },
+      // {
+      //   test: /\.(js|jsx)$/,
+      //   loader: 'babel-loader',
+      //   include: [
+      //     joinPath('src'),
+      //     joinPath('test'),
+      //     joinPath('node_modules/webpack-dev-server/client')
+      //   ],
+      //   exclude: /(node_modules|bower_components)/
+      // },
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
