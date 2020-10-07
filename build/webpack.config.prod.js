@@ -10,7 +10,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 
 const webpackConfig = merge(baseWebpackConfig, {
 
@@ -23,12 +23,13 @@ const webpackConfig = merge(baseWebpackConfig, {
   },
 
   optimization: {
+    minimize: true,
     minimizer: [
-      new UglifyJsPlugin({
-        uglifyOptions: {
-          warnings: utils.debugMode,
+      new TerserPlugin({
+        terserOptions: {
+          warnings: false,
           compress: {
-            drop_console: !utils.debugMode
+            drop_console: true
           }
         },
         sourceMap: config.build.productionSourceMap,
