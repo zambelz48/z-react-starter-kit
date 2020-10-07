@@ -12,7 +12,7 @@ module.exports = {
   },
   settings: {
       react: {
-          version: '16.9.49'
+          version: '16.13.1'
       },
   },
   plugins: [
