@@ -25,4 +25,7 @@
     "scss.validate": false,
 
     "stylelint.enable": true,
+    "[xml]": {
+        "editor.defaultFormatter": "DotJoshJohnson.xml"
+    },
 }
