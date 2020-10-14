@@ -15,7 +15,8 @@
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"jsx": "react",
-		"noEmit": false
+		"noEmit": false,
+		"typeRoots": [ "node_modules/@types" ]
 	},
 	"include": ["src"],
 	"exclude": ["node_modules", ".git", ".vscode", "dist"]

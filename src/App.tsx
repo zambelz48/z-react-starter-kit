@@ -1,5 +1,5 @@
 import React from 'react'
-import { ReactComponent as IconCheck } from "./assets/svg/IconCheck.svg";
+import { ReactComponent as IconCheck } from "./assets/svg/IconCheck.svg"
 
 function App(): JSX.Element {
 	return (
